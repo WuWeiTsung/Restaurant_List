@@ -17,21 +17,19 @@ app.set('view engine', 'handlebars')
 app.get('/', (req, res) => {
   res.render('index', { restaurants: restaurantList.results })
 })
-
+//點選功能
 app.get('/restaurants/:resId', (req, res) => {
   const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.resId)
   res.render('show', { restaurant: restaurant })
 })
-
-
+//搜尋功能(name or category)
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
   const restaurant = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
+    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
   })
   res.render('index', { restaurants: restaurant, keyword: keyword })
 })
-
 
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
