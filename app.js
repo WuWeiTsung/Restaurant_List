@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
 const Restaurant = require('./models/restaurant')
 
 mongoose.connect('mongodb://localhost/restaurant', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -29,11 +30,11 @@ db.once('open', () => {
   console.log('mongoDB connected')
 })
 
+app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }))
-// routes setting
-// app.get('/', (req, res) => {
-//   res.render('index', { restaurants: restaurantList.results })
-// })
+
+
+
 // index page
 app.get('/', (req, res) => {
   Restaurant.find()
@@ -46,7 +47,7 @@ app.get('/restaurants/new', (req, res) => {
   return res.render('new')
 })
 
-app.post('/restaurants', (req, res) => {
+app.put('/restaurants', (req, res) => {
   const name = req.body.name
   const name_en = req.body.en_name
   const category = req.body.category
@@ -62,7 +63,7 @@ app.post('/restaurants', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// detail page
+// detail 
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
@@ -71,7 +72,7 @@ app.get('/restaurants/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//edit page
+//edit 
 app.get('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
@@ -80,7 +81,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id', (req, res) => {
   const id = req.params.id
   const name = req.body.name
   const name_en = req.body.en_name
@@ -109,7 +110,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 //delete function
-app.get('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .then(restaurant => restaurant.remove())
@@ -118,17 +119,6 @@ app.get('/restaurants/:id/delete', (req, res) => {
 })
 
 
-// return Restaurant.create(
-//   { name, name_en, category, image, location, phone, google_map, rating, description })
-//   .then(() => res.redirect('/'))
-//   .catch(error => console.log(error))
-
-
-//點選功能
-// app.get('/restaurants/:resId', (req, res) => {
-//   const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.resId)
-//   res.render('show', { restaurant: restaurant })
-// })
 // //搜尋功能(name or category)
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword

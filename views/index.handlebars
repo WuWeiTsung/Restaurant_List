@@ -1,9 +1,9 @@
 <!-- search bar -->
 <div class="container search-bar">
   <div class="search-bar-outer">
-    <div class="search-bar-inner">
+    <div class="search-bar-inner col-sm-4">
       <form action="/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
+        {{!-- <h4 class="mb-2">尋找餐廳：</h4> --}}
         <div class="input-group">
           <input type="text" name="keyword" value="{{keyword}}" class="form-control" placeholder="輸入餐廳、分類"
             aria-label="Restaurant Name..." value="" aria-describedby="search-button">
@@ -12,8 +12,6 @@
           </div>
         </div>
       </form>
-      <a href="./restaurants/new" class="btn btn-primary mt-3">Create</a>
-
     </div>
   </div>
 </div>
@@ -41,7 +39,10 @@
               </span>
               <a href="./restaurants/{{this._id}}" class="btn btn-info btn-sm mr-3">Detail</a>
               <a href="./restaurants/{{ this._id }}/edit" class="btn btn-success btn-sm mr-3">Edit </a /n>
-              <a href="./restaurants/{{this._id}}/delete" class="btn btn-danger btn-sm ">Delete</a>
+              <form action="./restaurants/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+              {{!-- <a href="./restaurants/{{this._id}}?_method=DELETE" class="btn btn-danger btn-sm ">Delete</a> --}}
 
             </div>
           </div>
